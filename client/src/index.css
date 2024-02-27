@@ -1,0 +1,58 @@
+#busBookingContainer {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: auto;
+}
+
+#busBookingContainer h1 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+#busBookingContainer p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+#busBookingContainer button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#busBookingContainer button:hover {
+  background-color: #0056b3;
+}
+.buscontainer{
+display: flex;
+}
+.busDetails {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 300px;
+}
+
+.busDetails p {
+  margin: 5px 0;
+}
+
+.busDetails p:first-child {
+  font-weight: bold;
+}
+
+.busDetails p:nth-child(odd) {
+  color: #333; /* Change the color of odd-numbered paragraphs */
+}
+
+.busDetails p:nth-child(even) {
+  color: #666; /* Change the color of even-numbered paragraphs */
+}

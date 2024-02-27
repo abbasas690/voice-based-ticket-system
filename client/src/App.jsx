@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import VoiceBookingSystem from './pages/Home'
+import Home from './pages/Home'
 import BusBookingPage from './pages/BusBookingPage';
+import TrainBookingPage from './pages/TrainBookingPage';
+import AirlineBookingPage from './pages/AirlineBookingPage';
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,10 +12,10 @@ function App() {
   return (
    <Router>
      <Routes>
-      <Route path="/" element={<VoiceBookingSystem/>} />
+      <Route path="/" element={<Home/>} />
       <Route path="/bus" element={<BusBookingPage/>} />
-      <Route path="/train" element={<h1>train</h1>} />
-      <Route path="/airline" element={<h1>airline</h1>} />
+      <Route path="/train" element={<TrainBookingPage/>} />
+      <Route path="/airline" element={<AirlineBookingPage/>} />
     </Routes>
     </Router>
   );

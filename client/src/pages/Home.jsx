@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const VoiceBookingSystem = () => {
+const Home = () => {
   const [speechRecognitionActive, setSpeechRecognitionActive] = useState(false);
   const [prompted, setPrompted] = useState(false);
 
@@ -37,7 +37,7 @@ const VoiceBookingSystem = () => {
       setSpeechRecognitionActive(false);
       startVoiceInput();
     };
-  };
+  
 
   const handleUserResponse = (response) => {
     if (response.includes('பஸ்')) {
@@ -48,12 +48,12 @@ const VoiceBookingSystem = () => {
       window.location.href = '/airline'; // விமானம் பக்கத்திற்கு நகர்த்துக
     } else {
       if (!prompted) {
-        speak("   நீங்கள் எந்த சேவையை  விரும்புகிறீர்கள்? பஸ், ரயில், அல்லது விமானம்?");
+        speak("நீங்கள் எந்த சேவையை  விரும்புகிறீர்கள்? பஸ், ரயில், அல்லது விமானம்?");
         setPrompted(true);
       }
     }
   };
-
+};
   const speak = (text) => {
     const msg = new window.SpeechSynthesisUtterance(text);
     msg.lang = 'ta-IN';
@@ -61,7 +61,8 @@ const VoiceBookingSystem = () => {
   };
 
   useEffect(() => {
-    speak("புதிய சேவையை தொடங்க என்டர் பட்டனை அழுத்தவும்");
+    speak("புதிய சேவையை தொடங்க நுழைவு  பட்டனை அழுத்தவும்");
+    speak("நீங்கள் எந்த சேவையை  விரும்புகிறீர்கள்? பஸ், ரயில், அல்லது விமானம்?");
   }, []);
 
   return (
@@ -71,4 +72,4 @@ const VoiceBookingSystem = () => {
   );
 };
 
-export default VoiceBookingSystem;
+export default Home;
