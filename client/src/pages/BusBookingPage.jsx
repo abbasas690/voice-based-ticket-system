@@ -15,9 +15,19 @@ const BusBookingPage = () => {
   const [submit,setSubmit]=useState(false)
 
   useEffect(()=>{
+    var myHeaders = new Headers();
+    const raw = JSON.stringify({
+      source:userDetails.from,
+      destination: userDetails.destination,
+    })
+    myHeaders.append("Content-Type", "application/json");
+    fetch('http://localhost:3001/routes',{
+      method:"GET",
+      headers:myHeaders,
+      body:raw,
 
-    fetch('http://localhost:3001/routes').then(result => result.json()).then(routes => setData(routes))
-  },[])
+    }).then(result => result.json()).then(routes => setData(routes))
+  },[userDetails.from,userDetails.destination])
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
