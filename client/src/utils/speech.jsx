@@ -59,4 +59,7 @@ function isNumericNumber(word) {
     return numericRegex.test(word);
 }
 
-export {tamilToNumeric,isTamilNumber,isNumericNumber,speak};
+let isObjEmpty = (obj) => {
+    return Object.keys(obj).length === 0 && obj.constructor === Object
+}
+export {tamilToNumeric,isTamilNumber,isNumericNumber,speak,isObjEmpty};

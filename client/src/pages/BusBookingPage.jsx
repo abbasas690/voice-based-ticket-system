@@ -1,34 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { tamilToNumeric ,isNumericNumber,isTamilNumber, speak } from '../utils/speech';
-const BusBookingPage = () => {
-  const [userDetails, setUserDetails] = useState({
-    name: '',
-    from: '',
-    destination: '',
-    email: '',
-    day:'',
-    month:'',
-    year:'',
-    date:` `
-  });
-  const [data,setData]=useState([])
-  const [submit,setSubmit]=useState(false)
+import { tamilToNumeric ,isNumericNumber,isTamilNumber, speak,isObjEmpty } from '../utils/speech';
+import { useNavigate } from 'react-router-dom';
 
+const BusBookingPage = ({userDetails,data,dataRoute,submit,setUserDetails,setData,setDataRoute,setSubmit}) => {
+   const history = useNavigate();
   useEffect(()=>{
-    var myHeaders = new Headers();
-    const raw = JSON.stringify({
-      source:userDetails.from,
-      destination: userDetails.destination,
-    })
-    myHeaders.append("Content-Type", "application/json");
-    fetch('http://localhost:3001/routes',{
-      method:"GET",
-      headers:myHeaders,
-      body:raw,
+  var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
-    }).then(result => result.json()).then(routes => setData(routes))
+var raw = JSON.stringify({
+  "source":   userDetails.from,
+  "destination":userDetails.destination,
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("http://localhost:3001/bus/findRoute", requestOptions)
+  .then(response => response.json())
+  .then(result => { setDataRoute(result);console.log(result)})
+  .catch(error => console.log('error', error)); 
   },[userDetails.from,userDetails.destination])
 
+
+  useEffect(()=>{
+  const data = []
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+ for (const val of dataRoute){  
+    fetch("http://localhost:3001/bus/findBus",{
+    method:"POST",
+    headers:myHeaders,
+    body: JSON.stringify({"bus_id":val.bus_id})
+    })
+    .then( result=> result.json() )
+    .then(res =>
+       data.push(res[0])
+      )
+      .catch(e => console.log(e))
+       }
+
+       console.log(data)
+       setData(data)
+  },[dataRoute])
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
     return () => {
@@ -114,10 +133,12 @@ const BusBookingPage = () => {
                     :  setUserDetails(prevDetails => ({ ...prevDetails, year: value }))
       break;
     case 'தேடு':
-      setSubmit(true)
-      break
-    case 'பின்னால்':
-      setSubmit(false)
+      console.log(typeof data)
+      console.log(data)
+      if(!isObjEmpty(data)){
+      // window.location.href="/bus/details"
+       history('/bus/details');
+      }else{console.log("nos data")}
       break
     case 'கட்டளை':
       speak(
@@ -132,7 +153,8 @@ const BusBookingPage = () => {
          பின்னால். பூர்த்தி செய்யும் படிவத்திற்கு மீண்டும் திரும்பு 
          கட்டளை. கட்டளைகளின் பட்டியலை பார்க்க`)
       break
-      case '':
+      case 'இருக்கை':
+        console.log(value)
       break;
     default:
       console.log('Invalid command');
@@ -145,7 +167,6 @@ const BusBookingPage = () => {
   return (
     <div id="busBookingContainer">
       <h1>Bus Booking</h1>
-      {!submit ?
       <div>
         <p>Name: {userDetails.name}</p>
         <p>From: {userDetails.from}</p>
@@ -156,20 +177,6 @@ const BusBookingPage = () => {
         <p>month: {userDetails.month}</p>
         <p>year: {userDetails.year}</p>
       </div>
-      : data !== 0 && (
-        data.map(bus =>(
-          bus.destination == userDetails.destination && bus.source == userDetails.from &&(
-          <div key={bus.route_id}  class="busDetails">
-            <p>name:{bus.name}</p>
-            <p>from: {bus.source} </p>
-            <p>destination: {bus.destination} </p>
-            <p>type: {bus.type}</p>
-            <p>price: {bus.price}</p>
-          </div>
-          )
-        ))
-      )
-      }
     </div>
   );
 };

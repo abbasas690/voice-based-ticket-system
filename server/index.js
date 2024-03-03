@@ -6,7 +6,7 @@ const port = 3001;
 const busRout=require("./routes/busRoutes")
 // Dummy data for demonstration purposes
 const busRoutes = [
-    { route_id: 1, name:"kpn", source: "`சென்னை", destination: "கோயம்புத்தூர்", price: 250,type:"ac",nos:52 },
+    { route_id: 1, name:"kpn", source: "சென்னை", destination: "கோயம்புத்தூர்", price: 250,type:"ac",nos:52 },
     { route_id: 2, name:"kpn", source: "சென்னை", destination: "கோயம்புத்தூர்", price: 150,type:"non-ac",nos:52 },
     { route_id: 3, name:"kpn", source: "சென்னை", destination: "கோயம்புத்தூர்", price: 150,type:"non-ac",nos:52 },
     { route_id: 4, name:"kpc", source: "கோயம்புத்தூர்", destination: "மதுரை", price:250, type:"ac",nos:25 },
