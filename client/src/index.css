@@ -56,3 +56,55 @@ display: flex;
 .busDetails p:nth-child(even) {
   color: #666; /* Change the color of even-numbered paragraphs */
 }
+/* Bus seat container */
+.seatContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid black;
+}
+
+/* Bus seat */
+.seat {
+    width: 40px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border: 2px solid #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Empty seat placeholder */
+.emptySeat {
+    width: 40px;
+    height: 40px;
+    /* Use the same background color as seats */
+    background-color: #f0f0f0;
+}
+
+/* Occupied seat */
+.seat.occupied {
+    background-color: #ff8080; /* Change color for occupied seats */
+    cursor: not-allowed; /* Change cursor for occupied seats */
+}
+
+/* First row */
+.firstRow {
+    display: flex;
+    margin: 0;
+}
+/* Last row */
+.lastRow {
+    display: grid;
+    grid-template-columns: repeat(5,40px);
+}
+.seatInfo{
+  display: flex;
+  justify-content: center;
+border: 2px solid rebeccapurple;
+}

@@ -6,6 +6,7 @@ const busController = require('../controller/busController');
 router.get('/getBus', busController.getAllBus);
 router.post('/findRoute', busController.findRoute);
 router.post('/findBus', busController.findBus);
+router.post('/seats', busController.seats);
 // Add more routes as needed
 
 module.exports = router;

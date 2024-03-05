@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { isNumericNumber,isTamilNumber,speak,tamilToNumeric } from '../utils/speech';
+import { useNavigate } from 'react-router-dom';
+import { isNumericNumber,isTamilNumber,speak,tamilToNumeric } from '../../utils/speech';
+
 export default function BusDetail({data,selectedBus,setSelectedBus}) {
 
+  const history = useNavigate()
     useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
     return () => {
@@ -75,6 +78,11 @@ export default function BusDetail({data,selectedBus,setSelectedBus}) {
        `)
     }
       break
+      case 'இருக்கை':
+       history('/bus/seat') 
+        break
+    default:
+      console.log('invalid command')
   };
 
 }

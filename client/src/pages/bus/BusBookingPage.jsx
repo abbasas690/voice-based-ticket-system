@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { tamilToNumeric ,isNumericNumber,isTamilNumber, speak,isObjEmpty } from '../utils/speech';
+import { tamilToNumeric ,isNumericNumber,isTamilNumber, speak,isObjEmpty } from '../../utils/speech';
 import { useNavigate } from 'react-router-dom';
 
 const BusBookingPage = ({userDetails,data,dataRoute,submit,setUserDetails,setData,setDataRoute,setSubmit}) => {
    const history = useNavigate();
+   console.log("dataroute",dataRoute)
   useEffect(()=>{
   var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
@@ -22,7 +23,7 @@ var requestOptions = {
 
 fetch("http://localhost:3001/bus/findRoute", requestOptions)
   .then(response => response.json())
-  .then(result => { setDataRoute(result);console.log(result)})
+  .then(result => { setDataRoute({...dataRoute,...result[0]});console.log(result)})
   .catch(error => console.log('error', error)); 
   },[userDetails.from,userDetails.destination])
 
@@ -32,20 +33,21 @@ fetch("http://localhost:3001/bus/findRoute", requestOptions)
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
- for (const val of dataRoute){  
+ for (const val of dataRoute.bus_id){  
+  console.log(val)
     fetch("http://localhost:3001/bus/findBus",{
     method:"POST",
     headers:myHeaders,
-    body: JSON.stringify({"bus_id":val.bus_id})
+    body: JSON.stringify({"bus_id":val})
     })
     .then( result=> result.json() )
-    .then(res =>
+    .then(res =>{
        data.push(res[0])
-      )
+      console.log(res)
+      })
       .catch(e => console.log(e))
        }
 
-       console.log(data)
        setData(data)
   },[dataRoute])
   useEffect(() => {
@@ -53,6 +55,7 @@ fetch("http://localhost:3001/bus/findRoute", requestOptions)
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
+       console.log(data)
   }, []);
 
   const handleKeyPress = (event) => {
@@ -133,6 +136,8 @@ fetch("http://localhost:3001/bus/findRoute", requestOptions)
                     :  setUserDetails(prevDetails => ({ ...prevDetails, year: value }))
       break;
     case 'தேடு':
+    setUserDetails(prevDetails => ({ ...prevDetails, data: `${userDetails.day}-${userDetails.month}-${userDetails.year}` }))
+    console.log(userDetails.date)
       console.log(typeof data)
       console.log(data)
       if(!isObjEmpty(data)){
@@ -173,9 +178,6 @@ fetch("http://localhost:3001/bus/findRoute", requestOptions)
         <p>Destination: {userDetails.destination}</p>
         <p>mobile: {userDetails.email}</p>
         <p>Date:{userDetails.day}-{userDetails.month}-{userDetails.year} </p>
-        <p>day: {userDetails.day}</p>
-        <p>month: {userDetails.month}</p>
-        <p>year: {userDetails.year}</p>
       </div>
     </div>
   );

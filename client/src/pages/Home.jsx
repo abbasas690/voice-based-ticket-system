@@ -25,6 +25,7 @@ const Home = () => {
     
     recognition.onresult = (event) => {
       const userResponse = event.results[0][0].transcript.toLowerCase();
+      console.log(userResponse)
       handleUserResponse(userResponse);
       recognition.stop();
       setSpeechRecognitionActive(false);

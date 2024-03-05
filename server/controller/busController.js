@@ -51,3 +51,22 @@ exports.findBus = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+exports.seats = async (req, res) => {
+    try {
+        // Perform database operations using the connection instance
+        const client = await MongoClient.connect(uri)
+        const db = client.db(db_name)
+        const{date,route_id}=req.body
+        console.log(date,route_id)
+        const booking = await db.collection('booking').find({date:date,route_id:route_id}).toArray();
+        const seat=[]
+        for(const book of booking){
+            seat.push(...book.seats)
+        }
+        console.log(seat)
+        res.json(seat);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

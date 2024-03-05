@@ -18,18 +18,19 @@ const busesData = [
 
 // Define sample data for bus routes
 const busRoutesData = [
-    { bus_id: 1, route_id:1,  source: "சென்னை", destination: "கோயம்புத்தூர்",},
-    { bus_id: 2, route_id:2,  source: "சென்னை", destination: "கோயம்புத்தூர்",},
-    { bus_id: 3, route_id:3,  source: "சென்னை", destination: "கோயம்புத்தூர்",},
-    { bus_id: 4, route_id:4,  source: "கோயம்புத்தூர்", destination: "மதுரை",},
-    { bus_id: 5, route_id:5,  source: "திருப்பூர்", destination: "சென்னை",  }
+    { bus_id: [1,2,3], route_id:1,  source: "சென்னை", destination: "கோயம்புத்தூர்",},
+    { bus_id: [4], route_id:4,  source: "கோயம்புத்தூர்", destination: "மதுரை",},
+    { bus_id: [5], route_id:5,  source: "திருப்பூர்", destination: "சென்னை",  }
 ];
 
 // Define sample data for bookings
 const bookingsData = [
-    {booking_id:1, username: 'user1', bus_id: 1, route_id: 1, date: '1-2-24', seats: [2] },
-    {booking_id:2, username: 'user2', bus_id: 2, route_id:2, date: '3-3-24', seats: [1] },
-    {booking_id:3, username: 'user2', bus_id: 3, route_id: 3, date: '4-4-24', seats: [1] },
+    {booking_id:1, username: 'user1', bus_id: 1, route_id: 1, date: '1-2-24', seats: [3] },
+    {booking_id:2, username: 'user2', bus_id: 2, route_id:1, date: '3-3-24', seats: [3] },
+    {booking_id:3, username: 'user3', bus_id: 2, route_id:1, date: '3-3-24', seats: [5] },
+    {booking_id:4, username: 'user4', bus_id: 2, route_id:1, date: '3-3-24', seats: [6,7] },
+    {booking_id:5, username: 'user5', bus_id: 2, route_id:1, date: '3-3-24', seats: [18,19] },
+    {booking_id:6, username: 'user6', bus_id: 3, route_id: 3, date: '4-4-24', seats: [1] },
     // Add more bookings as needed
 ];
 
