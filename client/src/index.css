@@ -30,8 +30,8 @@
 #busBookingContainer button:hover {
   background-color: #0056b3;
 }
-.buscontainer{
-display: flex;
+.buscontainer {
+  display: flex;
 }
 .busDetails {
   margin-bottom: 20px;
@@ -58,53 +58,57 @@ display: flex;
 }
 /* Bus seat container */
 .seatContainer {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    border: 2px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid black;
 }
 
 /* Bus seat */
 .seat {
-    width: 40px;
-    height: 40px;
-    background-color: #f0f0f0;
-    border: 2px solid #999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background-color: #f0f0f0;
+  border: 2px solid #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* Empty seat placeholder */
 .emptySeat {
-    width: 40px;
-    height: 40px;
-    /* Use the same background color as seats */
-    background-color: #f0f0f0;
+  width: 40px;
+  height: 40px;
+  /* Use the same background color as seats */
+  background-color: #f0f0f0;
 }
 
 /* Occupied seat */
 .seat.occupied {
-    background-color: #ff8080; /* Change color for occupied seats */
-    cursor: not-allowed; /* Change cursor for occupied seats */
+  background-color: #ff8080; /* Change color for occupied seats */
+  cursor: not-allowed; /* Change cursor for occupied seats */
 }
 
+.seat.booked {
+  background-color: #00ff80; /* Change color for occupied seats */
+  cursor: not-allowed; /* Change cursor for occupied seats */
+}
 /* First row */
 .firstRow {
-    display: flex;
-    margin: 0;
+  display: flex;
+  margin: 0;
 }
 /* Last row */
 .lastRow {
-    display: grid;
-    grid-template-columns: repeat(5,40px);
+  display: grid;
+  grid-template-columns: repeat(5, 40px);
 }
-.seatInfo{
+.seatInfo {
   display: flex;
   justify-content: center;
-border: 2px solid rebeccapurple;
+  border: 2px solid rebeccapurple;
 }
