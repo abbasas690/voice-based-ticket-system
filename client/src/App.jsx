@@ -6,6 +6,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BusDetail from "./pages/bus/BusDetail";
 import BusSeat from "./pages/bus/BusSeat";
+import BusBooking from "./pages/bus/BusBooking";
 function App() {
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -17,6 +18,7 @@ function App() {
     year: "24",
     date: ` `,
   });
+  const [bookedSeats, setBookedSeats] = useState([]);
   const [dataRoute, setDataRoute] = useState({
     bus_id: [],
     route_id: 0,
@@ -58,12 +60,26 @@ function App() {
           }
         />
         <Route
+          path="/bus/booking"
+          element={
+            <BusBooking
+              busDetails={data.length !== 0 ? data[selectedBus - 1] : []}
+              userDetails={userDetails}
+              dataRoute={dataRoute}
+              bookedSeats={bookedSeats}
+              setBookedSeats={setBookedSeats}
+            />
+          }
+        />
+        <Route
           path="/bus/seat"
           element={
             <BusSeat
               busDetails={data.length !== 0 ? data[selectedBus - 1] : []}
               userDetails={userDetails}
               dataRoute={dataRoute}
+              bookedSeats={bookedSeats}
+              setBookedSeats={setBookedSeats}
             />
           }
         />

@@ -127,3 +127,31 @@
   font-family: Arial, sans-serif;
   font-size: 16px;
 }
+.booking-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.booking-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ccc;
+  gap: 1rem;
+  border-radius: 5px;
+}
+.booking-box-number {
+  border: 2px solid #333;
+  min-width: 10%;
+  min-height: 10%;
+  margin-bottom: 5%;
+  margin-left: 2%;
+}
+.booking-user {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

@@ -3,18 +3,26 @@ import {
   tamilToNumeric,
   isNumericNumber,
   isTamilNumber,
+  startListening,
   speak,
   isObjEmpty,
 } from "../../utils/speech";
+import { useNavigate } from "react-router-dom";
 
-function BusSeat({ busDetails, userDetails, dataRoute }) {
+function BusSeat({
+  busDetails,
+  userDetails,
+  dataRoute,
+  bookedSeats,
+  setBookedSeats,
+}) {
   console.log("userDetails", userDetails);
   console.log("dataRoute", dataRoute);
   const [seat, setSeat] = useState([
     ...Array.from(Array(busDetails.nos).keys(), (n) => n + 1),
   ]);
   const [occupiedSeats, setOccupiedSeat] = useState([]);
-  const [bookedSeats, setBookedSeats] = useState([]);
+  const history = useNavigate();
 
   function isSeatOccupied(occupiedSeats, seatNumber) {
     // Check if the seatNumber exists in the occupiedSeats array
@@ -59,75 +67,36 @@ function BusSeat({ busDetails, userDetails, dataRoute }) {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      startListening();
-    }
-  };
-
-  const startListening = () => {
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = "ta-IN";
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.toLowerCase();
-      const sanitizedTranscript = transcript.replace(
-        /[^\w\s\d\u0100-\uFFFF]/g,
-        ""
-      );
-      console.log(sanitizedTranscript);
-      processCommand(sanitizedTranscript);
-      recognition.stop(); // Stop listening after processing a command
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-    };
-
-    recognition.onend = () => {
-      // recognition.start(); // Restart listening after processing is done
-    };
-
-    recognition.start();
-  };
-
-  const processCommand = async (command) => {
-    // Normalize the input
-    const normalizedCommand = command.trim().toLowerCase();
-
-    // Split the command into action and value
-    const [action, ...valueParts] = normalizedCommand.split(" ");
-    const value = valueParts.join(" ");
-
-    // Check if both action and value are present
-    if (!action) {
-      console.log("Invalid command. Please provide both action and value.");
-      return;
-    }
-
-    // Process the command
-    switch (action) {
-      case "என்":
-        if (!isNumericNumber(value) && isTamilNumber(value)) {
-          if (
-            !isSeatOccupied(occupiedSeats, parseInt(tamilToNumeric[value])) &&
-            !isseatBooked(bookedSeats, parseInt(tamilToNumeric[value]))
-          ) {
-            setBookedSeats((prev) =>
-              Array.from(new Set([...prev, parseInt(tamilToNumeric[value])]))
-            );
-          }
-        } else if (isNumericNumber(value)) {
-          setBookedSeats((prev) =>
-            Array.from(new Set([...prev, parseInt(value)]))
-          );
-        } else {
-          console.log("invalid number");
+      startListening((action, value) => {
+        switch (action) {
+          case "என்":
+            if (!isNumericNumber(value) && isTamilNumber(value)) {
+              !isSeatOccupied(occupiedSeats, parseInt(tamilToNumeric[value])) &&
+              !isseatBooked(bookedSeats, parseInt(tamilToNumeric[value]))
+                ? setBookedSeats((prev) =>
+                    Array.from(
+                      new Set([...prev, parseInt(tamilToNumeric[value])])
+                    )
+                  )
+                : null;
+            } else if (isNumericNumber(value)) {
+              setBookedSeats((prev) =>
+                Array.from(new Set([...prev, parseInt(value)]))
+              );
+            } else {
+              console.log("invalid number");
+            }
+            break;
+          case "பின்":
+            history(-1);
+            break;
+          case "பதிவு":
+            history("/bus/booking");
+            break;
+          default:
+            console.log("Invalid command");
         }
-        break;
-      case "பின்":
-        history(-1);
-        break;
-      default:
-        console.log("Invalid command");
+      });
     }
   };
   console.log(bookedSeats);

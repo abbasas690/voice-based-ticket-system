@@ -67,4 +67,54 @@ let isObjEmpty = (obj) => {
   }
   return true; // If all properties are empty, return true
 };
-export { tamilToNumeric, isTamilNumber, isNumericNumber, speak, isObjEmpty };
+
+const startListening = (call) => {
+  const recognition = new window.webkitSpeechRecognition();
+  recognition.lang = "ta-IN";
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript.toLowerCase();
+    const sanitizedTranscript = transcript.replace(
+      /[^\w\s\d\u0100-\uFFFF]/g,
+      ""
+    );
+    console.log(sanitizedTranscript);
+    const normalizedCommand = sanitizedTranscript.trim().toLowerCase();
+
+    // Split the command into action and value
+    const [action, ...valueParts] = normalizedCommand.split(" ");
+    const value = valueParts.join(" ");
+
+    // Check if both action and value are present
+    if (!action) {
+      console.log("Invalid command. Please provide both action and value.");
+      return;
+    }
+
+    // Process the command
+    call(action, value);
+    recognition.stop(); // Stop listening after processing a command
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Speech recognition error:", event.error);
+  };
+
+  recognition.onend = () => {
+    // recognition.start(); // Restart listening after processing is done
+  };
+
+  recognition.start();
+};
+
+const processCommand = async (command) => {
+  // Normalize the input
+};
+export {
+  tamilToNumeric,
+  isTamilNumber,
+  startListening,
+  isNumericNumber,
+  speak,
+  isObjEmpty,
+};

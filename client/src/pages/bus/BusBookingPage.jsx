@@ -4,6 +4,7 @@ import {
   isNumericNumber,
   isTamilNumber,
   speak,
+  startListening,
   isObjEmpty,
 } from "../../utils/speech";
 import { useNavigate } from "react-router-dom";
@@ -74,109 +75,74 @@ const BusBookingPage = ({
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       console.log(data);
-      startListening();
-    }
-  };
-
-  const startListening = () => {
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = "ta-IN";
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript.toLowerCase();
-      const sanitizedTranscript = transcript.replace(
-        /[^\w\s\d\u0100-\uFFFF]/g,
-        ""
-      );
-      console.log(sanitizedTranscript);
-      processCommand(sanitizedTranscript);
-      recognition.stop(); // Stop listening after processing a command
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event.error);
-    };
-
-    recognition.onend = () => {
-      // recognition.start(); // Restart listening after processing is done
-    };
-
-    recognition.start();
-  };
-
-  const processCommand = async (command) => {
-    // Normalize the input
-    const normalizedCommand = command.trim().toLowerCase();
-
-    // Split the command into action and value
-    const [action, ...valueParts] = normalizedCommand.split(" ");
-    const value = valueParts.join(" ");
-
-    // Check if both action and value are present
-    if (!action) {
-      console.log("Invalid command. Please provide both action and value.");
-      return;
-    }
-
-    // Process the command
-    switch (action) {
-      case "name":
-      case "பெயர்":
-        setUserDetails((prevDetails) => ({ ...prevDetails, name: value }));
-        speak(`பெயர் ${value}}`);
-        break;
-      case "from":
-      case "இருந்து":
-        setUserDetails((prevDetails) => ({ ...prevDetails, from: value }));
-        speak(`இருந்து ${value}}`);
-        break;
-      case "destination":
-      case "இடம்":
-        setUserDetails((prevDetails) => ({
-          ...prevDetails,
-          destination: value,
-        }));
-        speak(`இடம் ${value}}`);
-        break;
-      case "mobile":
-      case "கைபேசி":
-        setUserDetails((prevDetails) => ({ ...prevDetails, email: value }));
-        speak(`கைபேசி ${value}}`);
-        break;
-      case "date":
-      case "நாள்":
-        !isNumericNumber(value) && isTamilNumber(value)
-          ? setUserDetails((prevDetails) => ({
+      startListening((action, value) => {
+        switch (action) {
+          case "name":
+          case "பெயர்":
+            setUserDetails((prevDetails) => ({ ...prevDetails, name: value }));
+            speak(`பெயர் ${value}}`);
+            break;
+          case "from":
+          case "இருந்து":
+            setUserDetails((prevDetails) => ({ ...prevDetails, from: value }));
+            speak(`இருந்து ${value}}`);
+            break;
+          case "destination":
+          case "இடம்":
+            setUserDetails((prevDetails) => ({
               ...prevDetails,
-              day: tamilToNumeric[value],
-            }))
-          : setUserDetails((prevDetails) => ({ ...prevDetails, day: value }));
-        speak(`நாள் ${value}}`);
-        break;
-      case "மாதம்":
-        !isNumericNumber(value) && isTamilNumber(value)
-          ? setUserDetails((prevDetails) => ({
-              ...prevDetails,
-              month: tamilToNumeric[value],
-            }))
-          : setUserDetails((prevDetails) => ({ ...prevDetails, month: value }));
-        speak(`மாதம் ${value}}`);
-        break;
-      case "ஆண்டு":
-        !isNumericNumber(value) && isTamilNumber(value)
-          ? setUserDetails((prevDetails) => ({
-              ...prevDetails,
-              year: tamilToNumeric[value],
-            }))
-          : setUserDetails((prevDetails) => ({ ...prevDetails, year: value }));
-        speak(`ஆண்டு ${value}}`);
-        break;
-      case "தேடு":
-        history("/bus/details");
-        break;
-      case "கட்டளை":
-        speak(
-          `பெயர் . பயனரின் பெயரை அமைக்க
+              destination: value,
+            }));
+            speak(`இடம் ${value}}`);
+            break;
+          case "mobile":
+          case "கைபேசி":
+            setUserDetails((prevDetails) => ({ ...prevDetails, email: value }));
+            speak(`கைபேசி ${value}}`);
+            break;
+          case "date":
+          case "நாள்":
+            !isNumericNumber(value) && isTamilNumber(value)
+              ? setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  day: tamilToNumeric[value],
+                }))
+              : setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  day: value,
+                }));
+            speak(`நாள் ${value}}`);
+            break;
+          case "மாதம்":
+            !isNumericNumber(value) && isTamilNumber(value)
+              ? setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  month: tamilToNumeric[value],
+                }))
+              : setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  month: value,
+                }));
+            speak(`மாதம் ${value}}`);
+            break;
+          case "ஆண்டு":
+            !isNumericNumber(value) && isTamilNumber(value)
+              ? setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  year: tamilToNumeric[value],
+                }))
+              : setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  year: value,
+                }));
+            speak(`ஆண்டு ${value}}`);
+            break;
+          case "தேடு":
+            history("/bus/details");
+            break;
+          case "கட்டளை":
+            speak(
+              `பெயர் . பயனரின் பெயரை அமைக்க
          இருந்து. பயனரின் செல்லும் இடம் அமைக்க
          இலக்கு. பயனரின்  இருக்கும்  இடம் அமைக்க
          கைபேசி. பயனரின்  அலைபேசி எண்   அமைக்க
@@ -186,13 +152,15 @@ const BusBookingPage = ({
          தேடு. ரயில் தேடுவதற்கு
          பின்னால். பூர்த்தி செய்யும் படிவத்திற்கு மீண்டும் திரும்பு 
          கட்டளை. கட்டளைகளின் பட்டியலை பார்க்க`
-        );
-        break;
-      case "இருக்கை":
-        console.log(value);
-        break;
-      default:
-        console.log("Invalid command");
+            );
+            break;
+          case "இருக்கை":
+            console.log(value);
+            break;
+          default:
+            console.log("Invalid command");
+        }
+      });
     }
   };
 
