@@ -112,3 +112,18 @@
   justify-content: center;
   border: 2px solid rebeccapurple;
 }
+.date-box {
+  display: flex;
+}
+.date-item {
+  width: 25px;
+  height: 25px;
+  color: #666;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}

@@ -15,7 +15,6 @@ const BusBookingPage = ({
   setUserDetails,
   setData,
   setDataRoute,
-  setSubmit,
 }) => {
   const history = useNavigate();
   console.log("dataroute", dataRoute);
@@ -45,10 +44,9 @@ const BusBookingPage = ({
   }, [userDetails.from, userDetails.destination]);
 
   useEffect(() => {
-    const data = [];
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+    const data = [];
     for (const val of dataRoute.bus_id) {
       console.log(val);
       fetch("http://localhost:3001/bus/findBus", {
@@ -63,15 +61,14 @@ const BusBookingPage = ({
         })
         .catch((e) => console.log(e));
     }
-
     setData(data);
   }, [dataRoute]);
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
+    console.log(data);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-    console.log(data);
   }, []);
 
   const handleKeyPress = (event) => {
@@ -175,12 +172,7 @@ const BusBookingPage = ({
         speak(`ஆண்டு ${value}}`);
         break;
       case "தேடு":
-        if (!isObjEmpty(data)) {
-          // window.location.href="/bus/details"
-          history("/bus/details");
-        } else {
-          console.log("nos data");
-        }
+        history("/bus/details");
         break;
       case "கட்டளை":
         speak(
@@ -212,9 +204,12 @@ const BusBookingPage = ({
         <p>From: {userDetails.from}</p>
         <p>Destination: {userDetails.destination}</p>
         <p>mobile: {userDetails.email}</p>
-        <p>
-          Date:{userDetails.day}-{userDetails.month}-{userDetails.year}{" "}
-        </p>
+        <p> Date: </p>
+        <div className="date-box">
+          <span className="date-item">{userDetails.day}</span>
+          <span className="date-item">{userDetails.month}</span>
+          <span className="date-item">{userDetails.year}</span>
+        </div>
       </div>
     </div>
   );

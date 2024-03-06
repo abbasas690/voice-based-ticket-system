@@ -111,16 +111,20 @@ function BusSeat({ busDetails, userDetails, dataRoute }) {
             !isSeatOccupied(occupiedSeats, parseInt(tamilToNumeric[value])) &&
             !isseatBooked(bookedSeats, parseInt(tamilToNumeric[value]))
           ) {
-            setBookedSeats((prev) => [
-              ...prev,
-              parseInt(tamilToNumeric[value]),
-            ]);
+            setBookedSeats((prev) =>
+              Array.from(new Set([...prev, parseInt(tamilToNumeric[value])]))
+            );
           }
         } else if (isNumericNumber(value)) {
-          setBookedSeats((prev) => [...prev, parseInt(value)]);
+          setBookedSeats((prev) =>
+            Array.from(new Set([...prev, parseInt(value)]))
+          );
         } else {
           console.log("invalid number");
         }
+        break;
+      case "பின்":
+        history(-1);
         break;
       default:
         console.log("Invalid command");

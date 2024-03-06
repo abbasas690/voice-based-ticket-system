@@ -88,6 +88,9 @@ export default function BusDetail({ data, selectedBus, setSelectedBus }) {
       case "இருக்கை":
         history("/bus/seat");
         break;
+      case "பின்":
+        history(-1);
+        break;
       default:
         console.log("invalid command");
     }

@@ -60,6 +60,11 @@ function isNumericNumber(word) {
 }
 
 let isObjEmpty = (obj) => {
-  return Object.keys(obj).length === 0 && obj.constructor === Object;
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && obj[key].length !== 0) {
+      return false; // If any property has a non-empty value, return false
+    }
+  }
+  return true; // If all properties are empty, return true
 };
 export { tamilToNumeric, isTamilNumber, isNumericNumber, speak, isObjEmpty };

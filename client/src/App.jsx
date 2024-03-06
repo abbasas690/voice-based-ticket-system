@@ -14,7 +14,7 @@ function App() {
     email: "",
     day: "",
     month: "",
-    year: "",
+    year: "24",
     date: ` `,
   });
   const [dataRoute, setDataRoute] = useState({
