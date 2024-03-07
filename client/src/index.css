@@ -155,3 +155,30 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+.trainContainer {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+.train-details {
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  gap: 4rem;
+}
+
+.train-details h2 {
+  color: #333;
+  font-size: 24px;
+}
+
+.train-details p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.train-details strong {
+  font-weight: bold;
+}

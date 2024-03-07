@@ -44,7 +44,8 @@ exports.getTrain = async (req, res) => {
   try {
     await getTrainBtwStation(f, t, (r) => {
       console.log(r);
-      res.status(200).json({ data: JSON.parse(r) });
+      data = JSON.parse(r);
+      res.status(200).json(data);
     });
     // Perform database operations using the connection instance
   } catch (error) {

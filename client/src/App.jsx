@@ -1,12 +1,13 @@
 import Home from "./pages/Home";
 import BusBookingPage from "./pages/bus/BusBookingPage";
-import TrainBookingPage from "./pages/TrainBookingPage";
+import TrainBookingPage from "./pages/train/TrainBookingPage";
 import AirlineBookingPage from "./pages/AirlineBookingPage";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BusDetail from "./pages/bus/BusDetail";
 import BusSeat from "./pages/bus/BusSeat";
 import BusBooking from "./pages/bus/BusBooking";
+import TrainDetail from "./pages/train/TrainDetail";
 function App() {
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -26,8 +27,9 @@ function App() {
     destination: "",
   });
   const [data, setData] = useState([]);
-  const [submit, setSubmit] = useState(false);
+  const [TrainData, setTrainData] = useState({});
   const [selectedBus, setSelectedBus] = useState(null);
+  const [selectedTrain, setSelectedTrain] = useState(null);
   return (
     <Router>
       <Routes>
@@ -40,14 +42,32 @@ function App() {
               setUserDetails={setUserDetails}
               dataRoute={dataRoute}
               setDataRoute={setDataRoute}
-              submit={submit}
-              setSubmit={setSubmit}
               setData={setData}
               data={data}
             />
           }
         />
-        <Route path="/train" element={<TrainBookingPage />} />
+        <Route
+          path="/train"
+          element={
+            <TrainBookingPage
+              userDetails={userDetails}
+              setUserDetails={setUserDetails}
+              setData={setTrainData}
+              data={TrainData}
+            />
+          }
+        />
+        <Route
+          path="/train/details"
+          element={
+            <TrainDetail
+              data={TrainData}
+              selectedTrain={selectedTrain}
+              setSelectedTrain={setSelectedTrain}
+            />
+          }
+        />
         <Route path="/airline" element={<AirlineBookingPage />} />
         <Route
           path="/bus/details"
