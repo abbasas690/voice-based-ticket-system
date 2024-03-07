@@ -18,7 +18,14 @@ const BusBookingPage = ({
   setDataRoute,
 }) => {
   const history = useNavigate();
-  console.log("dataroute", dataRoute);
+  function isAllFilled(userdetails) {
+    console.log(userdetails);
+    return (
+      userdetails.name !== "" &&
+      userdetails.from !== "" &&
+      userdetails.destination !== ""
+    );
+  }
   useEffect(() => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -66,7 +73,6 @@ const BusBookingPage = ({
   }, [dataRoute]);
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-    console.log(data);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
