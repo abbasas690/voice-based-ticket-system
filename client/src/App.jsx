@@ -8,6 +8,7 @@ import BusDetail from "./pages/bus/BusDetail";
 import BusSeat from "./pages/bus/BusSeat";
 import BusBooking from "./pages/bus/BusBooking";
 import TrainDetail from "./pages/train/TrainDetail";
+import TrainSeat from "./pages/train/TrainSeat";
 function App() {
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -90,6 +91,12 @@ function App() {
               setBookedSeats={setBookedSeats}
               selectedBus={selectedBus}
             />
+          }
+        />
+        <Route
+          path="/train/seat"
+          element={
+            <TrainSeat TrainData={TrainData} selectedTrain={selectedTrain} />
           }
         />
         <Route

@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import {
+  tamilToNumeric,
   isNumericNumber,
   isTamilNumber,
-  speak,
-  tamilToNumeric,
   startListening,
+  speak,
+  isObjEmpty,
 } from "../../utils/speech";
+import { useNavigate } from "react-router-dom";
 
-export default function TrainDetail({ data, selectedTrain, setSelectedTrain }) {
+function TrainSeat({ TrainData, selectedTrain }) {
   const history = useNavigate();
+  console.log(selectedTrain, TrainData);
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
     return () => {
@@ -20,40 +21,18 @@ export default function TrainDetail({ data, selectedTrain, setSelectedTrain }) {
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      console.log(data);
       startListening((action, value) => {
         switch (action) {
-          case "ரயில்":
-            !isNumericNumber(value) && isTamilNumber(value)
-              ? setSelectedTrain(tamilToNumeric[value])
-              : setSelectedTrain(value);
-            console.log(selectedTrain);
-            break;
-          case "தகவல்":
-            let index = 0;
-            for (const d of data.data) {
-              index += 1;
-              if (index > 4) {
-                break;
-              }
-              console.log(d);
-              speak(`
-              ரயில் எண் ${index} 
-              ரயில் பெயர் ${d.train_base.train_name} ${d.train_base.train_no}
-              ${d.train_base.from_stn_name} to ${d.train_base.to_stn_name}
-              புறப்படும் நேரம்: ${d.train_base.from_time}
-              வருகை நேரம்: ${d.train_base.to_time}
-       `);
-            }
-            break;
-          case "இருக்கை":
-            history("/train/seat");
+          case "என்":
             break;
           case "பின்":
             history(-1);
             break;
+          case "பதிவு":
+            history("/bus/booking");
+            break;
           default:
-            console.log("invalid command");
+            console.log("Invalid command");
         }
       });
     }
@@ -97,24 +76,14 @@ export default function TrainDetail({ data, selectedTrain, setSelectedTrain }) {
   };
 
   return (
-    <div className="trainContainer">
-      {data.success ? (
-        data.data.map((train, index) =>
-          index < 4 ? (
-            <div
-              key={train.train_base.train_no}
-              style={{
-                border: selectedTrain == index + 1 ? "2px solid green" : "",
-              }}
-              className=""
-            >
-              <TrainDetails train={train} />
-            </div>
-          ) : null
-        )
-      ) : (
-        <div>no trains avaliable</div>
-      )}
+    <div>
+      <h1>trani seat info</h1>
+      TrainData.success ? (
+      <TrainDetails train={TrainData.data[selectedTrain - 1]} />
+      ):
+      <div>no selected train avaliable</div>
     </div>
   );
 }
+
+export default TrainSeat;
