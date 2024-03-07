@@ -88,6 +88,7 @@ function App() {
               dataRoute={dataRoute}
               bookedSeats={bookedSeats}
               setBookedSeats={setBookedSeats}
+              selectedBus={selectedBus}
             />
           }
         />

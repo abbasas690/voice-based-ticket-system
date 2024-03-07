@@ -12,7 +12,13 @@ import {
 // Normalize the input
 
 // };
-function BusBooking({ busDetails, userDetails, dataRoute, bookedSeats }) {
+function BusBooking({
+  busDetails,
+  userDetails,
+  dataRoute,
+  bookedSeats,
+  selectedBus,
+}) {
   const [number, setNumber] = useState("");
   const [message, setMessage] = useState("");
   useEffect(() => {
@@ -44,7 +50,7 @@ function BusBooking({ busDetails, userDetails, dataRoute, bookedSeats }) {
 
             var raw = JSON.stringify({
               username: userDetails.name,
-              bus_id: dataRoute.bus_id,
+              bus_id: dataRoute.bus_id[selectedBus - 1],
               route_id: dataRoute.route_id,
               date: `${userDetails.day}-${userDetails.month}-${userDetails.year}`,
               seats: bookedSeats,
