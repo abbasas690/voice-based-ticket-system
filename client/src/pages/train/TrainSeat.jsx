@@ -11,12 +11,12 @@ import { useNavigate } from "react-router-dom";
 
 function TrainSeat({ TrainData, selectedTrain }) {
   const [seatClass, setSeatClass] = useState(["1A", "2A", "2S", "3A", "SL"]);
-  const [selectedClass, setSelectedClass] = useState(1);
-  const NoOfSeat = [10, 45, 106, 63, 71];
+  const [selectedClass, setSelectedClass] = useState(0);
+  const NoOfSeat = [20, 45, 106, 63, 71];
   const [bookedSeat, setBookedSeat] = useState({
     "1A": [],
     "2A": [],
-    "2s": [],
+    "2S": [],
     "3A": [],
     SL: [],
   });
@@ -30,6 +30,11 @@ function TrainSeat({ TrainData, selectedTrain }) {
   const [seatNo, setSeatNo] = useState([
     ...Array.from(Array(NoOfSeat[selectedClass]).keys(), (n) => n + 1),
   ]);
+  useEffect(() => {
+    setSeatNo([
+      ...Array.from(Array(NoOfSeat[selectedClass]).keys(), (n) => n + 1),
+    ]);
+  }, [selectedClass]);
   const history = useNavigate();
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
@@ -38,25 +43,88 @@ function TrainSeat({ TrainData, selectedTrain }) {
     };
   }, []);
 
+  let newSelectedClass;
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       startListening((action, value) => {
         switch (action) {
           case "வகை":
-            !isNumericNumber(value) && isTamilNumber(value)
-              ? setSelectedClass(
-                  tamilToNumeric[value] < 7 ? tamilToNumeric[value] : 1
-                )
-              : setSelectedClass(value < 7 ? value : 1);
-            console.log(value);
+            if (!isNumericNumber(value) && isTamilNumber(value)) {
+              newSelectedClass =
+                tamilToNumeric[value] < 6 ? tamilToNumeric[value] : 1;
+            } else {
+              newSelectedClass = value < 6 ? value : 1;
+            }
+            setSelectedClass(newSelectedClass - 1);
+            console.log(newSelectedClass - 1);
             break;
-          case "வகை":
-            !isNumericNumber(value) && isTamilNumber(value)
-              ? setSelectedClass(
-                  tamilToNumeric[value] < 7 ? tamilToNumeric[value] : 1
-                )
-              : setSelectedClass(value < 7 ? value : 1);
-            console.log(value);
+          case "என்":
+            if (!isNumericNumber(value) && isTamilNumber(value)) {
+              console.log(selectedClass);
+              if (newSelectedClass == 1) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "1A": [...prev["1A"], tamilToNumeric[value]],
+                }));
+              }
+              if (newSelectedClass == 2) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "2A": [...prev["2A"], tamilToNumeric[value]],
+                }));
+              }
+              if (newSelectedClass == 3) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "2S": [...prev["2S"], tamilToNumeric[value]],
+                }));
+              }
+              if (newSelectedClass == 4) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "3A": [...prev["3A"], tamilToNumeric[value]],
+                }));
+              }
+              if (newSelectedClass == 5) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  SL: [...prev["SL"], tamilToNumeric[value]],
+                }));
+              }
+            } else if (isNumericNumber(value)) {
+              if (newSelectedClass == 1) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "1A": [...prev["1A"], parseInt(value)],
+                }));
+              }
+              if (newSelectedClass == 2) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "2A": [...prev["2A"], parseInt(value)],
+                }));
+              }
+              if (newSelectedClass == 3) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "2S": [...prev["2S"], parseInt(value)],
+                }));
+              }
+              if (newSelectedClass == 4) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  "3A": [...prev["3A"], parseInt(value)],
+                }));
+              }
+              if (newSelectedClass == 5) {
+                setBookedSeat((prev) => ({
+                  ...prev,
+                  SL: [...prev["SL"], parseInt(value)],
+                }));
+              }
+            } else {
+              console.log("invalid number", value);
+            }
             break;
           case "பின்":
             history(-1);
@@ -106,7 +174,7 @@ function TrainSeat({ TrainData, selectedTrain }) {
         </p> */}
 
         <div>
-          {seatClass.map((d, i) => (
+          {seatclass.map((d, i) => (
             <p
               key={i}
               style={{
@@ -130,26 +198,26 @@ function TrainSeat({ TrainData, selectedTrain }) {
           height: "100",
         }}
       >
-        {seatNo.map((d, i) => (
+        {seatNo.slice(0, 10).map((d, i) => (
           <div
             key={i}
             style={{
               border: "2px solid #00ff00",
               textAlign: "center",
-              backgroundColor: "blue",
+              backgroundColor: bookedSeat["1A"].includes(d) ? "green" : "blue",
               color: "white",
             }}
           >
             L{d}
           </div>
         ))}
-        {seatNo.map((d, i) => (
+        {seatNo.slice(10, 20).map((d, i) => (
           <div
             key={i}
             style={{
               border: "2px solid #00ff00",
               textAlign: "center",
-              backgroundColor: "red",
+              backgroundColor: bookedSeat["1A"].includes(d) ? "green" : "red",
               color: "white",
             }}
           >
@@ -180,7 +248,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["2A"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -207,7 +277,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["2A"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -245,7 +317,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["2S"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -272,7 +346,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["2S"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -311,7 +387,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["3A"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -338,7 +416,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["3A"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -377,7 +457,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["SL"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -404,7 +486,9 @@ function TrainSeat({ TrainData, selectedTrain }) {
               key={i}
               style={{
                 rotate: "-90deg",
-                border: ".3rem solid #ff00ff",
+                border: bookedSeat["SL"].includes(d)
+                  ? ".3rem solid #ff00ff"
+                  : ".3rem solid #00ff00",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -421,6 +505,7 @@ function TrainSeat({ TrainData, selectedTrain }) {
       </div>
     );
   };
+  console.log(bookedSeat);
   return (
     <div>
       <div>
