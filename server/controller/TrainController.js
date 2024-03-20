@@ -13,9 +13,9 @@ const getTrainBtwStation = async (from, to, callback) => {
     });
 };
 
-// const uri = "mongodb://localhost:27017/bus_system";
+const uri = "mongodb://localhost:27017/Train_system";
 // mongodb://localhost:27017
-// const db_name = "bus_system";
+const db_name = "Train_system";
 
 // Options for MongoDB connection
 
@@ -48,6 +48,39 @@ exports.getTrain = async (req, res) => {
       res.status(200).json(data);
     });
     // Perform database operations using the connection instance
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.seats = async (req, res) => {
+  try {
+    // Perform database operations using the connection instance
+    const client = await MongoClient.connect(uri);
+    const db = client.db(db_name);
+    const { date, source, destination } = req.body;
+    console.log(date);
+    const booking = await db
+      .collection("booking")
+      .find({
+        date: date,
+        source: source,
+        destination: destination,
+      })
+      .toArray();
+    const seat = [];
+    for (const book of booking) {
+      seat.push(book.seats);
+    }
+    const combinedObject = seat.reduce((acc, curr) => {
+      for (const compartment in curr) {
+        acc[compartment] = (acc[compartment] || []).concat(curr[compartment]);
+      }
+      return acc;
+    }, {});
+    console.log(combinedObject);
+    res.json(combinedObject);
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ error: "Internal server error" });

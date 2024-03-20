@@ -9,14 +9,15 @@ import BusSeat from "./pages/bus/BusSeat";
 import BusBooking from "./pages/bus/BusBooking";
 import TrainDetail from "./pages/train/TrainDetail";
 import TrainSeat from "./pages/train/TrainSeat";
+import TrainBooking from "./pages/train/TrainBooking";
 function App() {
   const [userDetails, setUserDetails] = useState({
-    name: "",
-    from: "",
-    destination: "",
-    email: "",
-    day: "",
-    month: "",
+    name: "danush",
+    from: "சென்னை",
+    destination: "கோயம்புத்தூர்",
+    email: "9566777567",
+    day: "1",
+    month: "2",
     year: "24",
     date: ` `,
   });
@@ -31,6 +32,13 @@ function App() {
   const [TrainData, setTrainData] = useState({});
   const [selectedBus, setSelectedBus] = useState(null);
   const [selectedTrain, setSelectedTrain] = useState(null);
+  const [TrainbookedSeat, setTrainBookedSeat] = useState({
+    "1A": [],
+    "2A": [],
+    "2S": [],
+    "3A": [],
+    SL: [],
+  });
   return (
     <Router>
       <Routes>
@@ -96,7 +104,22 @@ function App() {
         <Route
           path="/train/seat"
           element={
-            <TrainSeat TrainData={TrainData} selectedTrain={selectedTrain} />
+            <TrainSeat
+              TrainData={TrainData}
+              selectedTrain={selectedTrain}
+              userDetails={userDetails}
+              TrainbookedSeat={TrainbookedSeat}
+              setTrainBookedSeat={setTrainBookedSeat}
+            />
+          }
+        />
+        <Route
+          path="/train/booking"
+          element={
+            <TrainBooking
+              userDetails={userDetails}
+              TrainbookedSeat={TrainbookedSeat}
+            />
           }
         />
         <Route

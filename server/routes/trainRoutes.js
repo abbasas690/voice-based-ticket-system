@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const busController = require("../controller/TrainController");
+const TrainController = require("../controller/TrainController");
 
 // Define routes for buses
-router.post("/getTrain", busController.getTrain);
+router.post("/getTrain", TrainController.getTrain);
 // Add more routes as needed
+router.post("/seats", TrainController.seats);
 
 module.exports = router;
