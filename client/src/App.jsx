@@ -1,7 +1,6 @@
 import Home from "./pages/Home";
 import BusBookingPage from "./pages/bus/BusBookingPage";
 import TrainBookingPage from "./pages/train/TrainBookingPage";
-import AirlineBookingPage from "./pages/AirlineBookingPage";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BusDetail from "./pages/bus/BusDetail";
@@ -77,7 +76,6 @@ function App() {
             />
           }
         />
-        <Route path="/airline" element={<AirlineBookingPage />} />
         <Route
           path="/bus/details"
           element={

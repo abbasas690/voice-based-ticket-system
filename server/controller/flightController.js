@@ -17,7 +17,7 @@ exports.getAllBus = async (req, res) => {
     // Perform database operations using the connection instance
     const client = await MongoClient.connect(uri);
     const db = client.db(db_name);
-    const bus = await db.collection("flight").find().toArray();
+    const bus = await db.collection("flights").find().toArray();
     res.json(bus);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -45,10 +45,10 @@ exports.findBus = async (req, res) => {
     // Perform database operations using the connection instance
     const client = await MongoClient.connect(uri);
     const db = client.db(db_name);
-    const { bus_id } = req.body;
+    const { flight_id } = req.body;
     const bus = await db
-      .collection("flight")
-      .find({ bus_id: bus_id })
+      .collection("flights")
+      .find({ flight_id: flight_id })
       .toArray();
     res.json(bus);
   } catch (error) {
@@ -84,7 +84,7 @@ exports.booking = async (req, res) => {
     // Perform database operations using the connection instance
     const client = await MongoClient.connect(uri);
     const db = client.db(db_name);
-    const { bus_id, date, route_id, seats, username } = req.body;
+    const { flight_id, date, route_id, seats, username } = req.body;
     const last = await db
       .collection("booking")
       .find()
@@ -94,7 +94,7 @@ exports.booking = async (req, res) => {
     const bus = await db.collection("booking").insertOne({
       booking_id: last[0].booking_id + 1,
       username: username,
-      flight_id: bus_id,
+      flight_id: flight_id,
       route_id: route_id,
       date: date,
       seats: seats,
