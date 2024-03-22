@@ -9,7 +9,8 @@ import {
   startListening,
 } from "../../utils/speech";
 
-export default function BusDetail({ data, selectedBus, setSelectedBus }) {
+export default function FlightDetail({ data, selectedBus, setSelectedBus }) {
+  console.log(data);
   const history = useNavigate();
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
@@ -43,7 +44,7 @@ export default function BusDetail({ data, selectedBus, setSelectedBus }) {
             }
             break;
           case "இருக்கை":
-            history("/bus/seat");
+            history("/flight/seat");
             break;
           case "பின்":
             history(-1);
@@ -59,13 +60,13 @@ export default function BusDetail({ data, selectedBus, setSelectedBus }) {
     <div>
       {data.map((bus, index) => (
         <div
-          key={bus.bus_id}
+          key={bus.flight_id}
           style={{ border: selectedBus == index + 1 ? "2px solid green" : "" }}
           className="busDetails"
         >
           <p>Name:{bus.name}</p>
-          <p>Type: {bus.type}</p>
-          <p>Total No Of Seat :{bus.nos}</p>
+          <p>Type: {bus.class}</p>
+          <p>Total No Of Seat :{bus.seats}</p>
           <p>Price: {bus.price}</p>
         </div>
       ))}

@@ -12,7 +12,7 @@ import {
 // Normalize the input
 
 // };
-function BusBooking({
+function FlightBooking({
   busDetails,
   userDetails,
   dataRoute,
@@ -50,7 +50,7 @@ function BusBooking({
 
             var raw = JSON.stringify({
               username: userDetails.name,
-              bus_id: dataRoute.bus_id[selectedBus - 1],
+              flight_id: dataRoute.flight_id[selectedBus - 1],
               route_id: dataRoute.route_id,
               date: `${userDetails.day}-${userDetails.month}-${userDetails.year}`,
               seats: bookedSeats,
@@ -63,7 +63,7 @@ function BusBooking({
               redirect: "follow",
             };
 
-            fetch("http://localhost:3001/bus/booking", requestOptions)
+            fetch("http://localhost:3001/flight/booking", requestOptions)
               .then((response) => response.json())
               .then((result) => {
                 console.log(result);
@@ -89,7 +89,7 @@ function BusBooking({
         </p>
         <p>booked Seats No : {bookedSeats.toString()}</p>
         <p>Bus name:{busDetails.name}</p>
-        <p>type:{busDetails.type}</p>
+        <p>type:{busDetails.class}</p>
         <p>price:{busDetails.price}</p>
       </div>
       <div className="booking-box">
@@ -102,4 +102,4 @@ function BusBooking({
   );
 }
 
-export default BusBooking;
+export default FlightBooking;

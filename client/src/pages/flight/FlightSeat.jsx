@@ -9,7 +9,7 @@ import {
 } from "../../utils/speech";
 import { useNavigate } from "react-router-dom";
 
-function BusSeat({
+function FlightSeat({
   busDetails,
   userDetails,
   dataRoute,
@@ -19,7 +19,7 @@ function BusSeat({
   console.log("userDetails", userDetails);
   console.log("dataRoute", dataRoute);
   const [seat, setSeat] = useState([
-    ...Array.from(Array(busDetails.nos).keys(), (n) => n + 1),
+    ...Array.from(Array(busDetails.seats).keys(), (n) => n + 1),
   ]);
   const [occupiedSeats, setOccupiedSeat] = useState([]);
   const history = useNavigate();
@@ -49,7 +49,7 @@ function BusSeat({
       redirect: "follow",
     };
 
-    fetch("http://localhost:3001/bus/seats", requestOptions)
+    fetch("http://localhost:3001/flight/seats", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setOccupiedSeat([...result, 1, 2]);
@@ -91,7 +91,7 @@ function BusSeat({
             history(-1);
             break;
           case "பதிவு":
-            history("/bus/booking");
+            history("/flight/booking");
             break;
           default:
             console.log("Invalid command");
@@ -103,10 +103,10 @@ function BusSeat({
   return (
     <div>
       <div>
-        <h2>Bus Info</h2>
+        <h2>Flight Info</h2>
         <p>Name:{busDetails.name}</p>
-        <p>type:{busDetails.type}</p>
-        <p>Total No Of Seat :{busDetails.nos}</p>
+        <p>type:{busDetails.class}</p>
+        <p>Total No Of Seat :{busDetails.seats}</p>
         <p>pric:{busDetails.price}</p>
       </div>
       <div></div>
@@ -114,15 +114,8 @@ function BusSeat({
       <div className="seatInfo">
         <div className="seatContainer">
           {/* First row */}
-          <div className="firstRow">
-            <div className="seat occupied">1</div>
-            <div className="emptySeat"></div>
-            <div className="emptySeat"></div>
-            <div className="emptySeat"></div>
-            <div className="seat occupied">2</div>
-          </div>
           <div className="lastRow">
-            {seat.slice(2, 52).map((seatNumber, index) => (
+            {seat.slice(0, 52).map((seatNumber, index) => (
               <div
                 key={index}
                 className={
@@ -143,4 +136,4 @@ function BusSeat({
   );
 }
 
-export default BusSeat;
+export default FlightSeat;

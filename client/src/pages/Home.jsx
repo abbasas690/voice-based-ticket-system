@@ -19,7 +19,7 @@ const Home = () => {
         } else if (response.includes("ரயில்")) {
           window.location.href = "/train"; // ரயில் பக்கத்திற்கு நகர்த்துக
         } else if (response.includes("விமானம்")) {
-          window.location.href = "/airline"; // விமானம் பக்கத்திற்கு நகர்த்துக
+          window.location.href = "/flight"; // விமானம் பக்கத்திற்கு நகர்த்துக
         } else {
           if (!prompted) {
             speak(

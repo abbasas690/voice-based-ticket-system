@@ -7,31 +7,43 @@ const bulkOperationsBookingData = [];
 
 // Define sample data for flights
 const flightsData = [
-  { flight_id: 1, name: "Emirates", price: 500, class: "economy", seats: 200 },
-  { flight_id: 2, name: "Delta", price: 700, class: "business", seats: 50 },
+  { flight_id: 1, name: "IndiGo", price: 500, class: "economy", seats: 200 },
+  {
+    flight_id: 2,
+    name: "Air India",
+    price: 700,
+    class: "premium economy",
+    seats: 50,
+  },
   {
     flight_id: 3,
-    name: "Qatar Airways",
+    name: "SpiceJet",
     price: 1000,
-    class: "first",
+    class: "First",
     seats: 20,
   },
-  { flight_id: 4, name: "Air India", price: 450, class: "economy", seats: 150 },
-  { flight_id: 5, name: "IndiGo", price: 600, class: "economy", seats: 180 },
+  {
+    flight_id: 4,
+    name: "Air India",
+    price: 450,
+    class: "premium economy",
+    seats: 150,
+  },
+  { flight_id: 5, name: "IndiGo", price: 600, class: "first", seats: 180 },
   // Add more Indian flights
 ];
 
 // Define sample data for flight routes
 const flightRoutesData = [
   {
-    flight_id: [1, 2],
+    flight_id: [1, 2, 3],
     route_id: 1,
-    source: "New York",
-    destination: "London",
+    source: "சென்னை",
+    destination: "கோயம்புத்தூர்",
   },
-  { flight_id: [3], route_id: 2, source: "Paris", destination: "Dubai" },
-  { flight_id: [4], route_id: 3, source: "Mumbai", destination: "Delhi" },
-  { flight_id: [5], route_id: 4, source: "Delhi", destination: "Bangalore" },
+  { flight_id: [3], route_id: 2, source: "பாரிஸ்", destination: "டுபாய்" },
+  { flight_id: [4], route_id: 3, source: "மும்பை", destination: "தில்லி" },
+  { flight_id: [5], route_id: 4, source: "தில்லி", destination: "பெங்களூர்" },
   // Add more flight routes for Indian cities
 ];
 
@@ -42,15 +54,15 @@ const bookingsData = [
     username: "user1",
     flight_id: 1,
     route_id: 1,
-    date: "2024-04-01",
+    date: "1-2-24",
     seats: [3],
   },
   {
     booking_id: 2,
     username: "user2",
-    flight_id: 2,
+    flight_id: 1,
     route_id: 1,
-    date: "2024-04-01",
+    date: "1-2-24",
     seats: [1],
   },
   {
@@ -58,7 +70,7 @@ const bookingsData = [
     username: "user3",
     flight_id: 2,
     route_id: 1,
-    date: "2024-04-01",
+    date: "1-2-24",
     seats: [2],
   },
   {
@@ -66,7 +78,7 @@ const bookingsData = [
     username: "user4",
     flight_id: 4,
     route_id: 3,
-    date: "2024-04-02",
+    date: "1-2-24",
     seats: [5],
   },
   {
@@ -74,7 +86,7 @@ const bookingsData = [
     username: "user5",
     flight_id: 5,
     route_id: 4,
-    date: "2024-04-03",
+    date: "1-2-24",
     seats: [8, 9],
   },
   // Add more flight bookings for Indian flights as needed

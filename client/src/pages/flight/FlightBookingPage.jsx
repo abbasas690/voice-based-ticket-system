@@ -9,7 +9,7 @@ import {
 } from "../../utils/speech";
 import { useNavigate } from "react-router-dom";
 
-const BusBookingPage = ({
+const FlightBookingPage = ({
   userDetails,
   data,
   dataRoute,
@@ -42,7 +42,7 @@ const BusBookingPage = ({
       redirect: "follow",
     };
 
-    fetch("http://localhost:3001/bus/findRoute", requestOptions)
+    fetch("http://localhost:3001/flight/findRoute", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setDataRoute({ ...dataRoute, ...result[0] });
@@ -55,17 +55,17 @@ const BusBookingPage = ({
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const data = [];
-    for (const val of dataRoute.bus_id) {
+    for (const val of dataRoute.flight_id) {
       console.log(val);
-      fetch("http://localhost:3001/bus/findBus", {
+      fetch("http://localhost:3001/flight/findFlight", {
         method: "POST",
         headers: myHeaders,
-        body: JSON.stringify({ bus_id: val }),
+        body: JSON.stringify({ flight_id: val }),
       })
         .then((result) => result.json())
         .then((res) => {
           data.push(res[0]);
-          console.log(res);
+          console.log("flight result: ", res);
         })
         .catch((e) => console.log(e));
     }
@@ -144,7 +144,7 @@ const BusBookingPage = ({
             speak(`ஆண்டு ${value}}`);
             break;
           case "தேடு":
-            history("/bus/details");
+            history("/flight/details");
             break;
           case "கட்டளை":
             speak(
@@ -172,7 +172,7 @@ const BusBookingPage = ({
 
   return (
     <div id="busBookingContainer">
-      <h1>Bus Booking</h1>
+      <h1>Flight Booking</h1>
       <div>
         <p>Name: {userDetails.name}</p>
         <p>From: {userDetails.from}</p>
@@ -189,4 +189,4 @@ const BusBookingPage = ({
   );
 };
 
-export default BusBookingPage;
+export default FlightBookingPage;
