@@ -19,11 +19,8 @@ const Home = () => {
         } else if (response.includes("ரயில்")) {
           window.location.href = "/train"; 
         } else if (response.includes("விமானம்")) {
-<<<<<<< HEAD
-          window.location.href = "/flight"; // விமானம் பக்கத்திற்கு நகர்த்துக
-=======
-          window.location.href = "/airline"; 
->>>>>>> 4fb0bd8df16d992668be20bf87be1ef269b7381b
+
+          window.location.href = "/flight"
         } else {
           if (!prompted) {
             speak(
