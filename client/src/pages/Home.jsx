@@ -15,11 +15,15 @@ const Home = () => {
     if (event.key === "Enter" && !speechRecognitionActive) {
       startListening((response, value) => {
         if (response.includes("பஸ்")) {
-          window.location.href = "/bus"; // பஸ் பக்கத்திற்கு நகர்த்துக
+          window.location.href = "/bus"; 
         } else if (response.includes("ரயில்")) {
-          window.location.href = "/train"; // ரயில் பக்கத்திற்கு நகர்த்துக
+          window.location.href = "/train"; 
         } else if (response.includes("விமானம்")) {
+<<<<<<< HEAD
           window.location.href = "/flight"; // விமானம் பக்கத்திற்கு நகர்த்துக
+=======
+          window.location.href = "/airline"; 
+>>>>>>> 4fb0bd8df16d992668be20bf87be1ef269b7381b
         } else {
           if (!prompted) {
             speak(
