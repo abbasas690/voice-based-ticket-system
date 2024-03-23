@@ -17,11 +17,11 @@ function App() {
   //bus
   const [userDetails, setUserDetails] = useState({
     name: "danush",
-    from: "",
-    destination: "",
+    from: "சென்னை",
+    destination: "கோயம்புத்தூர்",
     email: "9566777567",
-    day: "",
-    month: "",
+    day: "1",
+    month: "2",
     year: "24",
     date: ` `,
   });

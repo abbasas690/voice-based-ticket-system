@@ -6,5 +6,6 @@ const TrainController = require("../controller/TrainController");
 router.post("/getTrain", TrainController.getTrain);
 // Add more routes as needed
 router.post("/seats", TrainController.seats);
+router.post("/booking", TrainController.booking);
 
 module.exports = router;

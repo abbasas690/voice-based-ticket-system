@@ -24,7 +24,7 @@ export default function FlightDetail({ data, selectedBus, setSelectedBus }) {
       console.log(data);
       startListening((action, value) => {
         switch (action) {
-          case "பேருந்து":
+          case "விமானம்":
             !isNumericNumber(value) && isTamilNumber(value)
               ? setSelectedBus(tamilToNumeric[value])
               : setSelectedBus(value);

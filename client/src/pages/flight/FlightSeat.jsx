@@ -105,9 +105,9 @@ function FlightSeat({
       <div>
         <h2>Flight Info</h2>
         <p>Name:{busDetails.name}</p>
-        <p>type:{busDetails.class}</p>
+        <p>Type:{busDetails.class}</p>
         <p>Total No Of Seat :{busDetails.seats}</p>
-        <p>pric:{busDetails.price}</p>
+        <p>Pric:{busDetails.price}</p>
       </div>
       <div></div>
       <h2>Seat Info</h2>

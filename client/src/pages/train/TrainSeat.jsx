@@ -6,6 +6,7 @@ import {
   startListening,
   speak,
   isObjEmpty,
+  getRandomInt,
 } from "../../utils/speech";
 import { useNavigate } from "react-router-dom";
 
@@ -18,8 +19,10 @@ function TrainSeat({
 }) {
   const [seatClass, setSeatClass] = useState(["1A", "2A", "2S", "3A", "SL"]);
   const [selectedClass, setSelectedClass] = useState(0);
+  const [price, setPrice] = useState(getRandomInt(800, 1000));
   const NoOfSeat = [20, 45, 106, 63, 71];
   const [isPayment, setIsPayment] = useState(false);
+  const [isbooked, setisbooked] = useState(false);
   const [number, setNumber] = useState("");
   const [message, setMessage] = useState("");
   console.log(TrainbookedSeat);
@@ -56,13 +59,6 @@ function TrainSeat({
       body: raw,
       redirect: "follow",
     };
-    let data = {
-      "1A": [],
-      "2A": [],
-      "2s": [],
-      "3A": [],
-      SL: [],
-    };
     fetch("http://localhost:3001/train/seats", requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -83,6 +79,7 @@ function TrainSeat({
   }, []);
 
   let newSelectedClass = 0;
+  let booked = false;
   const handleKeyPress = (event) => {
     console.log(occupiedSeat, typeof occupiedSeat);
     if (event.key === "Enter") {
@@ -103,6 +100,7 @@ function TrainSeat({
             if (!isNumericNumber(value) && isTamilNumber(value)) {
               console.log(selectedClass);
               if (newSelectedClass == 0) {
+                console.log("temp boooked seat:", tempBookedseat);
                 setTrainBookedSeat((prev) => ({
                   ...prev,
                   "1A": [...prev["1A"], tamilToNumeric[value]],
@@ -183,7 +181,45 @@ function TrainSeat({
             }
             break;
           case "புக்":
-            setMessage("booked sucessfully!!");
+            const bookedSeat = {
+              "1A": Array.from(new Set(TrainbookedSeat["1A"])),
+              "2A": Array.from(new Set(TrainbookedSeat["2A"])),
+              "2S": Array.from(new Set(TrainbookedSeat["2S"])),
+              "3A": Array.from(new Set(TrainbookedSeat["3A"])),
+              SL: Array.from(new Set(TrainbookedSeat["SL"])),
+            };
+            if (!booked) {
+              var myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+
+              var raw = JSON.stringify({
+                date: `${userDetails.day}-${userDetails.month}-${userDetails.year}`,
+                destination: userDetails.destination,
+                seats: bookedSeat,
+                source: userDetails.from,
+                username: userDetails.name,
+              });
+
+              var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow",
+              };
+
+              let res = "";
+              fetch("http://localhost:3001/train/booking", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                  console.log(result);
+                  setMessage(result.message);
+                  res = result;
+                })
+                .catch((error) => console.log("error", error));
+              booked = true;
+            } else {
+              console.log("alredy booked!!!");
+            }
             break;
           default:
             console.log("Invalid command");
@@ -247,7 +283,6 @@ function TrainSeat({
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(10,80px)",
-          border: "2px solid #f5f456",
           height: "100",
         }}
       >
@@ -255,14 +290,13 @@ function TrainSeat({
           <div
             key={i}
             style={{
-              border: "2px solid #00ff00",
+              border: "2px solid #00fff0",
               textAlign: "center",
               backgroundColor: occupiedSeat["1A"].includes(d)
                 ? "red"
                 : TrainbookedSeat["1A"].includes(d)
                 ? "green"
-                : "blue",
-              color: "white",
+                : "white",
             }}
           >
             L{d}
@@ -272,14 +306,13 @@ function TrainSeat({
           <div
             key={i}
             style={{
-              border: "2px solid #00ff00",
+              border: "2px solid #00fff0",
               textAlign: "center",
               backgroundColor: occupiedSeat["1A"].includes(d)
                 ? "red"
                 : TrainbookedSeat["1A"].includes(d)
                 ? "green"
-                : "blue",
-              color: "white",
+                : "white",
             }}
           >
             U{d}
@@ -309,9 +342,12 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["2A"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["2A"].includes(d)
+                  ? " red"
+                  : TrainbookedSeat["2A"].includes(d)
+                  ? " green"
+                  : " white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -319,7 +355,6 @@ function TrainSeat({
                 margin: "0px",
                 outline: "green",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -338,16 +373,19 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["2A"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["2A"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["2A"].includes(d)
+                  ? "green"
+                  : "white",
+
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
                 height: "2rem",
                 margin: "0px",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -378,9 +416,12 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["2S"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["2S"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["2S"].includes(d)
+                  ? "green"
+                  : "white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -388,7 +429,6 @@ function TrainSeat({
                 margin: "0px",
                 outline: "green",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -407,16 +447,18 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["2S"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["2S"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["2S"].includes(d)
+                  ? "green"
+                  : "white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
                 height: "2rem",
                 margin: "0px",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -448,9 +490,12 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["3A"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["3A"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["3A"].includes(d)
+                  ? "green"
+                  : "white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -458,7 +503,6 @@ function TrainSeat({
                 margin: "0px",
                 outline: "green",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -477,16 +521,18 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["3A"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["3A"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["3A"].includes(d)
+                  ? "green"
+                  : "white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
                 height: "2rem",
                 margin: "0px",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -518,9 +564,12 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["SL"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["SL"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["SL"].includes(d)
+                  ? "green"
+                  : "white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
@@ -528,7 +577,6 @@ function TrainSeat({
                 margin: "0px",
                 outline: "green",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -547,16 +595,18 @@ function TrainSeat({
               key={i}
               style={{
                 rotate: "-90deg",
-                border: TrainbookedSeat["SL"].includes(d)
-                  ? ".3rem solid #ff00ff"
-                  : ".3rem solid #00ff00",
+                border: "2px solid #00fff0",
+                backgroundColor: occupiedSeat["SL"].includes(d)
+                  ? "red"
+                  : TrainbookedSeat["SL"].includes(d)
+                  ? "green"
+                  : "white",
                 display: "flex",
                 alignItems: "center",
                 width: "2rem",
                 height: "2rem",
                 margin: "0px",
                 justifyContent: "center",
-                backgroundColor: "azure",
               }}
             >
               {d}
@@ -585,27 +635,37 @@ function TrainSeat({
                 {`
               ${
                 TrainbookedSeat["1A"].toString()
-                  ? " 1A : " + TrainbookedSeat["1A"].toString() + " . "
+                  ? " 1A : " +
+                    Array.from(new Set(TrainbookedSeat["1A"].toString())) +
+                    " . "
                   : ""
               }
               ${
                 TrainbookedSeat["2A"].toString()
-                  ? " 2A: " + TrainbookedSeat["2A"].toString() + " . "
+                  ? " 2A: " +
+                    Array.from(new Set(TrainbookedSeat["2A"].toString())) +
+                    " . "
                   : ""
               }
               ${
                 TrainbookedSeat["2S"].toString()
-                  ? " 2S: " + TrainbookedSeat["2S"].toString() + " . "
+                  ? " 2S: " +
+                    Array.from(new Set(TrainbookedSeat["2S"].toString())) +
+                    " . "
                   : ""
               }
               ${
                 TrainbookedSeat["3A"].toString()
-                  ? " 3A: " + TrainbookedSeat["3A"].toString() + " . "
+                  ? " 3A: " +
+                    Array.from(new Set(TrainbookedSeat["3A"].toString())) +
+                    " . "
                   : ""
               }
               ${
                 TrainbookedSeat["SL"].toString()
-                  ? " SL: " + TrainbookedSeat["SL"].toString() + " . "
+                  ? " SL: " +
+                    Array.from(new Set(TrainbookedSeat["SL"].toString())) +
+                    " . "
                   : ""
               }
               `}
@@ -643,6 +703,9 @@ function TrainSeat({
               <p>
                 {" "}
                 <b>Class: </b> First AC <b>coach type: </b>A
+                <b>
+                  {"  "} Price:{price}
+                </b>
               </p>
               <NoOfSeat1A />
             </div>
@@ -652,6 +715,9 @@ function TrainSeat({
               <p>
                 {" "}
                 <b>Class: </b> 2 Tire AC <b>Coach Type: </b>A
+                <b>
+                  {"  "} Price:{price - 60}
+                </b>
               </p>
               <NoOfSeat2A />{" "}
             </div>
@@ -662,6 +728,9 @@ function TrainSeat({
                 {" "}
                 <b>Class: </b> Second seating(2s)
               </p>
+              <b>
+                {"  "} Price:{price - 400}
+              </b>
               <NoOfSeat2s />{" "}
             </div>
           )}
@@ -671,12 +740,18 @@ function TrainSeat({
                 {" "}
                 <b>Class: </b> 3 Tire AC
               </p>
+              <b>
+                {"  "} Price:{price - 100}
+              </b>
               <NoOfSeat3A />{" "}
             </div>
           )}
           {selectedClass == 4 && (
             <div>
               <b>Class: </b> Sleeper
+              <b>
+                {"  "} Price:{price - 300}
+              </b>
               <NoOfSeatSL />{" "}
             </div>
           )}

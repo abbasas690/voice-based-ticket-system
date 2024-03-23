@@ -106,6 +106,11 @@ const startListening = (call) => {
 
   recognition.start();
 };
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}
 
 const processCommand = async (command) => {
   // Normalize the input
@@ -117,4 +122,5 @@ export {
   isNumericNumber,
   speak,
   isObjEmpty,
+  getRandomInt,
 };

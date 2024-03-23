@@ -8,10 +8,6 @@ import {
   speak,
 } from "../../utils/speech";
 
-// const processCommand = async (command) => {
-// Normalize the input
-
-// };
 function FlightBooking({
   busDetails,
   userDetails,
@@ -82,19 +78,19 @@ function FlightBooking({
       <div className="booking-user">
         <h2> User Details </h2>
         <p>Name:{userDetails.name}</p>
-        <p>from:{userDetails.from}</p>
-        <p>destination:{userDetails.destination}</p>
+        <p>From:{userDetails.from}</p>
+        <p>Destination:{userDetails.destination}</p>
         <p>
-          date:{`${userDetails.day}-${userDetails.month}-${userDetails.year}`}
+          Date:{`${userDetails.day}-${userDetails.month}-${userDetails.year}`}
         </p>
-        <p>booked Seats No : {bookedSeats.toString()}</p>
-        <p>Bus name:{busDetails.name}</p>
-        <p>type:{busDetails.class}</p>
-        <p>price:{busDetails.price}</p>
+        <p>Flight Seats No : {bookedSeats.toString()}</p>
+        <p>Flight name:{busDetails.name}</p>
+        <p>Type:{busDetails.class}</p>
+        <p>Price:{busDetails.price}</p>
       </div>
       <div className="booking-box">
         <div>
-          <p>pay number: </p> <div className="booking-box-number">{number}</div>
+          <p>Pay Number: </p> <div className="booking-box-number">{number}</div>
         </div>
         <div>{message}</div>
       </div>
