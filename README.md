@@ -14,6 +14,11 @@ This Voice-Based Ticketing System allows users to book tickets using voice comma
 - MongoDB
 - SpeechRecognition (for voice input)
 
+## Requirements
+- [Node.js](https://nodejs.org/)
+- [MongoDB Community Edition](https://www.mongodb.com/try/download/community)
+
+
 ## Installation
 
 1. **Clone the repository:**
@@ -40,13 +45,13 @@ This Voice-Based Ticketing System allows users to book tickets using voice comma
 1. **Start the backend server:**
    ```sh
    cd serve
-   node server.js
+   node index.js
    ```
 
 2. **Start the frontend server:**
    ```sh
    cd client
-   npm start
+   npm run dev
    ```
 
 
